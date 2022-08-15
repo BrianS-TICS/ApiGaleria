@@ -18,21 +18,23 @@ window.onload = () => {
 
 }
 
-function consultarApi() {
+async function consultarApi() {
 
     const termino = document.querySelector('#termino').value;
-
     const key = '26693921-398316e74402f4cc1d3c420e3';
     const url = `https://pixabay.com/api/?key=${key}&q=${termino}&per_page=${registrosPorPagina}&page=${paginaActual}`;
 
-    fetch(url)
-        .then(respuesta => respuesta.json())
-        .then(datos => {
-            totalPaginas = calcularPagina(datos.totalHits);
-            console.log(paginaActual);
-            mostrarImagenes(datos.hits);
-        });
+    try {
+        const respuesta = await fetch(url);
+        const datos = await respuesta.json();
 
+        totalPaginas = calcularPagina(datos.totalHits);
+        console.log(paginaActual);
+        mostrarImagenes(datos.hits);
+
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 // Generador que va a registrar la cantidad de elementos de acuredo a las paginas
